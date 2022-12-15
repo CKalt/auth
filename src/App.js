@@ -4,7 +4,7 @@ import { Amplify, API, graphqlOperation } from 'aws-amplify'
 import { createTodo } from './graphql/mutations'
 import { listTodos } from './graphql/queries'
 import awsExports from "./aws-exports";
-import { withAuthenticator, Button, Heading } from '@aws-amplify/ui-react';
+import { Authenticator, Button, Heading } from '@aws-amplify/ui-react';
 import '@aws-amplify/ui-react/styles.css';
 
 Amplify.configure(awsExports);
@@ -44,6 +44,12 @@ const App = ({ signOut, user }) => {
   }
 
   return (
+    <Authenticator>
+      {({ signOut, user }) => (
+        <main>
+          <h1>Hello {user.username}</h1>
+          <button onClick={signOut}>Sign out</button>
+
     <div style={styles.container}>
       <Heading level={1}>Hello {user.username}</Heading>
       <Button onClick={signOut}>Sign out</Button>
@@ -70,6 +76,11 @@ const App = ({ signOut, user }) => {
         ))
       }
     </div>
+
+        </main>
+      )}
+    </Authenticator>
+
   )
 }
 
@@ -82,4 +93,4 @@ const styles = {
   button: { backgroundColor: 'black', color: 'white', outline: 'none', fontSize: 18, padding: '12px 0px' }
 }
 
-export default withAuthenticator(App);
+export default App;
